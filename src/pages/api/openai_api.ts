@@ -3,7 +3,7 @@
 import type { NextApiRequest, NextApiResponse } from "next/types";
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   const apiKey = req.body.apiKey || process.env.OPEN_AI_KEY;
 
