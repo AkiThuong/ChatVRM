@@ -22,7 +22,10 @@ export default async function handler(
       text: message,
     }),
   };
-
+  const voiceSettings = {
+    stability: 0,
+    similarity_boost: 0,
+  };
   try {
     console.log("Request: ", {
       text: message,
