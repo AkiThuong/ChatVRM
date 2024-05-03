@@ -52,12 +52,16 @@ export const fetchAudio = async (
   apiKey: string
 ): Promise<ArrayBuffer> => {
   const ttsVoice = await ttsStreaming(talk.message, "gkpVmeUj2dN8UTBY3oUz");
+  if (!ttsVoice) {
+    throw new Error(
+      "ttsVoice is undefined, something went wrong with ttsStreaming."
+    );
+  }
   const url = ttsVoice.audio;
 
   if (url == null) {
-    throw new Error("Something went wrong");
+    throw new Error("Something went wrong, audio URL is null");
   }
-
   const resAudio = await fetch(url);
   const buffer = await resAudio.arrayBuffer();
   return buffer;
