@@ -1,4 +1,4 @@
-/* eslint-disable rule-name */
+/* eslint-disable warn */
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import fetch from "node-fetch";
