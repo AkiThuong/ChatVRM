@@ -37,15 +37,20 @@ export default async function handler(
       options
     );
 
-    if (!externalResponse.ok) {
-      throw new Error(`HTTP error! Status: ${externalResponse.status}`);
+    if (externalResponse.ok && externalResponse.body) {
+      externalResponse.body.pipe(res);
+    } else if (externalResponse.body) {
+      // Even though there's a body, the response was not OK.
+      const errorText = await externalResponse.text(); // Get textual error message if any.
+      console.error("API error:", errorText);
+      res.status(externalResponse.status).json({ error: errorText });
+    } else {
+      // No body in response.
+      console.error("API failed with status:", externalResponse.status);
+      res
+        .status(500)
+        .json({ error: "API call failed, no response data received." });
     }
-
-    // Set headers for content type as needed
-    res.setHeader("Content-Type", "audio/mpeg");
-
-    // Stream the response
-    externalResponse.body.pipe(res); // This should now work with node-fetch
   } catch (error) {
     console.error("API error:", error);
     res
