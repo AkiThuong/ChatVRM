@@ -14,16 +14,15 @@ export default async function handler(
   const options = {
     method: "POST",
     headers: {
-      "xi-api-key": process.env.ELEVEN_LAB_TTS_API_KEY,
       "Content-Type": "application/json",
+      "xi-api-key": process.env.ELEVEN_LAB_TTS_API_KEY || "", // Provide a fallback empty string
     },
-    body: `{"model_id":"eleven_multilingual_v2","text":"${message}"}`,
+    body: JSON.stringify({
+      model_id: "eleven_multilingual_v2",
+      text: message,
+    }),
   };
-  // If isSpeaking is true, then return early to prevent additional requests
-  const voiceSettings = {
-    stability: 0,
-    similarity_boost: 0,
-  };
+
   try {
     console.log("Request: ", {
       text: message,
