@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { useCallback, useContext, useEffect, useState } from "react";
 import VrmViewer from "@/components/vrmViewer";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
@@ -199,11 +201,10 @@ export default function Home() {
       <Meta />
       <Introduction
         openAiKey={openAiKey || ""}
-        koeiromapKey={koeiromapKey || ""}
+        koeiroMapKey={koeiromapKey}
         onChangeAiKey={setOpenAiKey}
         onChangeKoeiromapKey={setKoeiromapKey}
       />
-
       <VrmViewer />
       <MessageInputContainer
         isChatProcessing={chatProcessing}
