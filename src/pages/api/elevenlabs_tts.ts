@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next/types";
 import fetch from "node-fetch";
 
 type Data = {
