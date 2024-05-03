@@ -209,7 +209,7 @@ export default function Home() {
         onChatProcessStart={handleSendChat}
       />
       <Menu
-        openAiKey={openAiKey}
+        openAiKey={openAiKey ? ""}
         systemPrompt={systemPrompt}
         chatLog={chatLog}
         koeiroParam={koeiroParam}
