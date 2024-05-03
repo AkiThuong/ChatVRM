@@ -2,7 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import fetch from "node-fetch";
 
 type Data = {
-  audio: string;
+  audio?: string;
+  error?: string;
 };
 
 export default async function handler(
@@ -27,11 +28,6 @@ export default async function handler(
     similarity_boost: 0,
   };
   try {
-    console.log("Request: ", {
-      text: message,
-      voice_settings: voiceSettings,
-    });
-
     const externalResponse = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voice_model}?optimize_streaming_latency=4`,
       options
@@ -39,20 +35,14 @@ export default async function handler(
 
     if (externalResponse.ok && externalResponse.body) {
       externalResponse.body.pipe(res);
-    } else if (externalResponse.body) {
-      // Even though there's a body, the response was not OK.
-      const errorText = await externalResponse.text(); // Get textual error message if any.
+    } else {
+      // Handle non-OK responses
+      const errorText = await externalResponse.text();
       console.error("API error:", errorText);
       res.status(externalResponse.status).json({ error: errorText });
-    } else {
-      // No body in response.
-      console.error("API failed with status:", externalResponse.status);
-      res
-        .status(500)
-        .json({ error: "API call failed, no response data received." });
     }
   } catch (error) {
-    console.error("API error:", error);
+    console.error("Unhandled exception:", error);
     res
       .status(500)
       .json({ error: "Failed to process the text-to-speech request" });
