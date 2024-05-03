@@ -20,7 +20,9 @@ export default function Home() {
   const { viewer } = useContext(ViewerContext);
 
   const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
-  const [openAiKey, setOpenAiKey] = useState("");
+  const [openAiKey, setOpenAiKey] = useState(
+    process.env.NEXT_PUBLIC_OPENAI_KEY
+  );
   const [koeiromapKey, setKoeiromapKey] = useState("");
   const [koeiroParam, setKoeiroParam] = useState<KoeiroParam>(DEFAULT_PARAM);
   const [chatProcessing, setChatProcessing] = useState(false);
@@ -77,9 +79,16 @@ export default function Home() {
    */
   const handleSendChat = useCallback(
     async (text: string) => {
+      let svAPIkey;
       if (!openAiKey) {
-        setAssistantMessage("APIキーが入力されていません");
-        return;
+        const res = await fetch("/api/openai_api", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        svAPIkey = data.apiKey;
       }
 
       const newMessage = text;
@@ -103,12 +112,13 @@ export default function Home() {
         ...messageLog,
       ];
 
-      const stream = await getChatResponseStream(messages, openAiKey).catch(
-        (e) => {
-          console.error(e);
-          return null;
-        }
-      );
+      const stream = await getChatResponseStream(
+        messages,
+        openAiKey || svAPIkey
+      ).catch((e) => {
+        console.error(e);
+        return null;
+      });
       if (stream == null) {
         setChatProcessing(false);
         return;
@@ -213,7 +223,6 @@ export default function Home() {
         handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
         onChangeKoeiromapKey={setKoeiromapKey}
       />
-      <GitHubLink />
     </div>
   );
 }
