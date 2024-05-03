@@ -198,11 +198,12 @@ export default function Home() {
     <div className={"font-M_PLUS_2"}>
       <Meta />
       <Introduction
-        openAiKey={openAiKey}
-        koeiroMapKey={koeiromapKey}
+        openAiKey={openAiKey || ""}
+        koeiromapKey={koeiromapKey || ""}
         onChangeAiKey={setOpenAiKey}
         onChangeKoeiromapKey={setKoeiromapKey}
       />
+
       <VrmViewer />
       <MessageInputContainer
         isChatProcessing={chatProcessing}
