@@ -9,7 +9,7 @@ type Props = {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   onClickSendButton: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onClickMicButton: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClickMicButton: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 };
 export const MessageInput = ({
   userMessage,
