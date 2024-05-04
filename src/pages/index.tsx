@@ -137,7 +137,7 @@ export default function Home() {
           if (done) break;
 
           receivedMessage += value;
-
+          console.log("receivedMessage", receivedMessage);
           // 返答内容のタグ部分の検出
           const tagMatch = receivedMessage.match(/^\[(.*?)\]/);
           if (tagMatch && tagMatch[0]) {

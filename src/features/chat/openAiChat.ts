@@ -80,6 +80,7 @@ export async function getChatResponseStream(
         controller.error(error);
       } finally {
         reader.releaseLock();
+        console.log("reader", reader);
         controller.close();
       }
     },
