@@ -137,7 +137,6 @@ export default function Home() {
           if (done) break;
 
           receivedMessage += value;
-          console.log("receivedMessage", receivedMessage);
           // 返答内容のタグ部分の検出
           const tagMatch = receivedMessage.match(/^\[(.*?)\]/);
           if (tagMatch && tagMatch[0]) {
@@ -155,8 +154,6 @@ export default function Home() {
             receivedMessage = receivedMessage
               .slice(sentence.length)
               .trimStart();
-            console.log("sentence", sentence);
-            console.log("NewreceivedMessage", receivedMessage);
             // 発話不要/不可能な文字列だった場合はスキップ
             if (
               !sentence.replace(
@@ -166,8 +163,7 @@ export default function Home() {
             ) {
               continue;
             }
-            console.log("tag", tag);
-            console.log("sentence", sentence);
+
             const aiText = `${tag} ${sentence}`;
             const aiTalks = textsToScreenplay([aiText], koeiroParam);
             aiTextLog += aiText;
