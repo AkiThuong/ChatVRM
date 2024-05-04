@@ -147,7 +147,7 @@ export default function Home() {
 
           // 返答を一文単位で切り出して処理する
           const sentenceMatch = receivedMessage.match(
-            /^(.+[。．！？\n]|.{10,}[、,])/
+            /^(.+?[。．！？\n.]|.{10,}[、,])/
           );
           if (sentenceMatch && sentenceMatch[0]) {
             const sentence = sentenceMatch[0];
