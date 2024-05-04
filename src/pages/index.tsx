@@ -165,7 +165,8 @@ export default function Home() {
             ) {
               continue;
             }
-
+            console.log("tag", tag);
+            console.log("sentence", sentence);
             const aiText = `${tag} ${sentence}`;
             const aiTalks = textsToScreenplay([aiText], koeiroParam);
             aiTextLog += aiText;

@@ -72,7 +72,6 @@ export async function getChatResponseStream(
             const messagePiece = chunk.choices[0].delta.content;
 
             if (!!messagePiece) {
-              console.log("messagePiece", messagePiece);
               controller.enqueue(messagePiece);
             }
           }
