@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Configuration, OpenAIApi } from "openai";
 import { Message } from "../messages/messages";
 
@@ -36,7 +34,7 @@ export async function getChatResponseStream(
     throw new Error("Invalid API Key");
   }
 
-  function getCurrentWeather(location, unit = "fahrenheit") {
+  function getCurrentWeather(location: string, unit: string = "fahrenheit") {
     if (location.toLowerCase().includes("tokyo")) {
       console.log("Tokyo");
       return JSON.stringify({
@@ -60,7 +58,7 @@ export async function getChatResponseStream(
       return JSON.stringify({ location, temperature: "unknown" });
     }
   }
-  async function getTimelineData(ownerFilter = "") {
+  async function getTimelineData(ownerFilter: string = "") {
     // Preparing the body data
     const body = {
       ownerFilter,

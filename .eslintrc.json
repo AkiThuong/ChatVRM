@@ -1,5 +1,6 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next", "next/core-web-vitals"],
+
   "rules": {
     // Ensure correct rule names are used
     "react/no-unused-state": "warn" // an example of a valid rule
