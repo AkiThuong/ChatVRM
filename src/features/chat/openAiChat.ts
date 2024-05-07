@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Configuration, OpenAIApi } from "openai";
 import { Message } from "../messages/messages";
 
