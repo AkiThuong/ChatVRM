@@ -186,8 +186,8 @@ export async function getChatResponseStream(
         messages.push({
           tool_call_id: toolCall.id,
           role: "function",
-          name: functionName,
-          content: functionResponse,
+          name: functionName as string,
+          content: functionResponse as string,
         });
       } catch (error) {
         console.error(`Error calling function ${functionName}:`, error);

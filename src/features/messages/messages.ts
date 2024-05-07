@@ -5,6 +5,8 @@ import { KoeiroParam } from "../constants/koeiroParam";
 export type Message = {
   role: "assistant" | "system" | "user" | "function";
   content: string;
+  tool_call_id?: any;
+  name?: string;
 };
 
 const talkStyles = [
