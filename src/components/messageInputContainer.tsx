@@ -1,6 +1,7 @@
 import { MessageInput } from "@/components/messageInput";
 import { useState, useEffect, useCallback } from "react";
-
+import { useAtomValue } from "jotai";
+import { currentLanguageAtom } from "@/components/settings";
 type Props = {
   isChatProcessing: boolean;
   onChatProcessStart: (text: string) => void;
@@ -16,6 +17,7 @@ export const MessageInputContainer = ({
   isChatProcessing,
   onChatProcessStart,
 }: Props) => {
+  const currentLanguage = useAtomValue(currentLanguageAtom);
   const [userMessage, setUserMessage] = useState("");
   const [speechRecognition, setSpeechRecognition] =
     useState<SpeechRecognition>();
@@ -66,8 +68,9 @@ export const MessageInputContainer = ({
     if (!SpeechRecognition) {
       return;
     }
+
     const recognition = new SpeechRecognition();
-    recognition.lang = "ja-JP";
+    recognition.lang = currentLanguage;
     recognition.interimResults = true; // 認識の途中結果を返す
     recognition.continuous = false; // 発言の終了時に認識を終了する
 
@@ -75,7 +78,7 @@ export const MessageInputContainer = ({
     recognition.addEventListener("end", handleRecognitionEnd);
 
     setSpeechRecognition(recognition);
-  }, [handleRecognitionResult, handleRecognitionEnd]);
+  }, [handleRecognitionResult, handleRecognitionEnd, currentLanguage]);
 
   useEffect(() => {
     if (!isChatProcessing) {

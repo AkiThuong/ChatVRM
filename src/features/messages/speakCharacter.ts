@@ -3,16 +3,20 @@ import { ttsStreaming } from "./synthesizeVoice_7labs";
 import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+export const isSpeakingAtom = atom(false);
 
 const createSpeakCharacter = () => {
   let lastTime = 0;
   let prevFetchPromise: Promise<unknown> = Promise.resolve();
   let prevSpeakPromise: Promise<unknown> = Promise.resolve();
-
   return (
     screenplay: Screenplay,
     viewer: Viewer,
     koeiroApiKey: string,
+    setIsSpeaking: (isSpeaking: boolean) => void,
+    isFinalSentence: boolean,
+    setIsFinalSentence: (isSpeaking: boolean) => void,
     onStart?: () => void,
     onComplete?: () => void
   ) => {
@@ -21,8 +25,8 @@ const createSpeakCharacter = () => {
       if (now - lastTime < 1000) {
         await wait(1000 - (now - lastTime));
       }
-
-      const buffer = await fetchAudio(screenplay.talk, koeiroApiKey).catch(
+      const hiraganaText = await convertToHiragana(screenplay.talk.message);
+      const buffer = await fetchAudio(hiraganaText.message, koeiroApiKey).catch(
         () => null
       );
       lastTime = Date.now();
@@ -32,8 +36,10 @@ const createSpeakCharacter = () => {
     prevFetchPromise = fetchPromise;
     prevSpeakPromise = Promise.all([fetchPromise, prevSpeakPromise]).then(
       ([audioBuffer]) => {
+        setIsSpeaking(true);
         onStart?.();
         if (!audioBuffer) {
+          setIsSpeaking(false);
           return;
         }
         return viewer.model?.speak(audioBuffer, screenplay);
@@ -41,6 +47,8 @@ const createSpeakCharacter = () => {
     );
     prevSpeakPromise.then(() => {
       onComplete?.();
+      setIsSpeaking(false);
+      console.log("speakCharacter completed");
     });
   };
 };
@@ -48,10 +56,10 @@ const createSpeakCharacter = () => {
 export const speakCharacter = createSpeakCharacter();
 
 export const fetchAudio = async (
-  talk: Talk,
+  message: string,
   apiKey: string
 ): Promise<ArrayBuffer> => {
-  const ttsVoice = await ttsStreaming(talk.message, "gkpVmeUj2dN8UTBY3oUz");
+  const ttsVoice = await ttsStreaming(message, "gkpVmeUj2dN8UTBY3oUz");
   if (!ttsVoice) {
     throw new Error(
       "ttsVoice is undefined, something went wrong with ttsStreaming."
@@ -66,3 +74,30 @@ export const fetchAudio = async (
   const buffer = await resAudio.arrayBuffer();
   return buffer;
 };
+
+async function convertToHiragana(message: string) {
+  const body = {
+    message: message,
+    convertTo: "hiragana",
+  };
+
+  try {
+    const res = await fetch("/api/kuroshiro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json(); // casting as any removed for clarity
+    return { message: data.result };
+  } catch (error) {
+    console.error("Failed to convert message to Hiragana:", error);
+    throw error; // rethrowing the error is optional depending on how you want to handle errors
+  }
+}

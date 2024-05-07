@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import VrmViewer from "@/components/vrmViewer";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 import {
@@ -17,9 +17,22 @@ import { Introduction } from "@/components/introduction";
 import { Menu } from "@/components/menu";
 import { GitHubLink } from "@/components/githubLink";
 import { Meta } from "@/components/meta";
+import { useAtomValue, useSetAtom } from "jotai";
+import { isSpeakingAtom } from "@/features/messages/speakCharacter";
+import { atom } from "jotai";
 
+export const isFinalSentenceAtom = atom(false);
 export default function Home() {
   const { viewer } = useContext(ViewerContext);
+  const isSpeaking = useAtomValue(isSpeakingAtom);
+  const setIsSpeaking = useSetAtom(isSpeakingAtom);
+  const isSpeakingRef = useRef(isSpeaking);
+  useEffect(() => {
+    isSpeakingRef.current = isSpeaking;
+    console.log("Updated isSpeaking state:", isSpeaking);
+  }, [isSpeaking]);
+  const isFinalSentence = useAtomValue(isFinalSentenceAtom);
+  const setIsFinalSentence = useSetAtom(isFinalSentenceAtom);
 
   const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
   const [openAiKey, setOpenAiKey] = useState(
@@ -71,16 +84,36 @@ export default function Home() {
       onStart?: () => void,
       onEnd?: () => void
     ) => {
-      speakCharacter(screenplay, viewer, koeiromapKey, onStart, onEnd);
+      speakCharacter(
+        screenplay,
+        viewer,
+        koeiromapKey,
+        setIsSpeaking,
+        isFinalSentence,
+        setIsFinalSentence,
+        onStart,
+        onEnd
+      );
     },
     [viewer, koeiromapKey]
   );
 
+  useEffect(() => {
+    console.log("Updated isSpeaking state:", isSpeaking);
+  }, [isSpeaking]);
+
+  useEffect(() => {
+    console.log("final Sentence:", isFinalSentence);
+  }, [isFinalSentence]);
   /**
    * アシスタントとの会話を行う
    */
   const handleSendChat = useCallback(
     async (text: string) => {
+      if (isSpeakingRef.current) {
+        console.log("Currently speaking, will not send chat.");
+        return;
+      }
       let svAPIkey;
       if (!openAiKey) {
         const res = await fetch("/api/openai_api", {
@@ -134,7 +167,9 @@ export default function Home() {
       try {
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break;
+          if (done) {
+            break;
+          }
 
           receivedMessage += value;
           // 返答内容のタグ部分の検出
@@ -167,7 +202,6 @@ export default function Home() {
             const aiText = `${tag} ${sentence}`;
             const aiTalks = textsToScreenplay([aiText], koeiroParam);
             aiTextLog += aiText;
-
             // 文ごとに音声を生成 & 再生、返答を表示
             const currentAssistantMessage = sentences.join(" ");
             handleSpeakAi(aiTalks[0], () => {

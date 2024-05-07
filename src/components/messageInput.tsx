@@ -1,6 +1,8 @@
 import { IconButton } from "./iconButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
+import { useAtomValue, useSetAtom } from "jotai";
+import { isSpeakingAtom } from "@/features/messages/speakCharacter";
 type Props = {
   userMessage: string;
   isMicRecording: boolean;
@@ -29,17 +31,44 @@ export const MessageInput = ({
   };
   // State to manage microphone toggle independently
   const [micToggled, setMicToggled] = useState(false);
-
+  const isSpeaking = useAtomValue(isSpeakingAtom);
+  const setIsSpeaking = useSetAtom(isSpeakingAtom);
+  const isSpeakingRef = useRef(isSpeaking);
+  useEffect(() => {
+    isSpeakingRef.current = isSpeaking;
+    console.log("Updated isSpeaking state:", isSpeaking);
+  }, [isSpeaking]);
   const handleToggleMicButton = () => {
     setMicToggled((current) => !current); // Toggle state
   };
 
   // Effect to re-trigger mic toggle when chat processing finishes
   useEffect(() => {
-    if (!isChatProcessing && !isMicRecording && micToggled) {
-      onClickMicButton(); // Re-trigger mic toggle
+    let timer: string | number | NodeJS.Timeout | undefined;
+
+    // Only set up the timeout when isSpeaking changes to false
+    if (!isSpeaking) {
+      timer = setTimeout(() => {
+        // Check other conditions inside the timeout
+        if (!isChatProcessing && !isMicRecording && micToggled) {
+          onClickMicButton(); // Execute function after the delay only if conditions still hold
+        }
+      }, 2000); // Delay set to 1000 milliseconds (1 second)
     }
-  }, [isChatProcessing, isMicRecording, micToggled, onClickMicButton]);
+
+    // Clean up function that clears the timeout if dependencies change or if isSpeaking turns true
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [
+    isChatProcessing,
+    isMicRecording,
+    micToggled,
+    onClickMicButton,
+    isSpeaking, // Ensure this dependency is here to trigger effect on its change
+  ]);
 
   return (
     <div className="absolute bottom-0 z-20 w-screen">
@@ -55,7 +84,7 @@ export const MessageInput = ({
                     : "bg-gray-400"
                 } `}
                 isProcessing={isMicRecording}
-                disabled={isChatProcessing}
+                disabled={isChatProcessing || isSpeaking}
                 onClick={handleToggleMicButton}
                 label={"Toggle"}
               ></IconButton>
@@ -64,7 +93,7 @@ export const MessageInput = ({
                 iconName="24/Microphone"
                 className="bg-secondary hover:bg-secondary-hover active:bg-secondary-press disabled:bg-secondary-disabled"
                 isProcessing={isMicRecording}
-                disabled={isChatProcessing}
+                disabled={isChatProcessing || isSpeaking}
                 onClick={onClickMicButton}
               />
             </div>
@@ -73,7 +102,7 @@ export const MessageInput = ({
               placeholder="聞きたいことをいれてね"
               onChange={onChangeUserMessage}
               onKeyDown={handleKeyDown}
-              disabled={isChatProcessing}
+              disabled={isChatProcessing || isSpeaking}
               className="bg-surface1 hover:bg-surface1-hover focus:bg-surface1 disabled:bg-surface1-disabled disabled:text-primary-disabled rounded-16 w-full px-16 text-text-primary typography-16 font-bold disabled"
               value={userMessage}
             ></input>
@@ -82,7 +111,7 @@ export const MessageInput = ({
               iconName="24/Send"
               className="bg-secondary hover:bg-secondary-hover active:bg-secondary-press disabled:bg-secondary-disabled"
               isProcessing={isChatProcessing}
-              disabled={isChatProcessing || !userMessage}
+              disabled={isChatProcessing || !userMessage || isSpeaking}
               onClick={onClickSendButton}
             />
           </div>
