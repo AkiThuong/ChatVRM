@@ -185,7 +185,7 @@ export async function getChatResponseStream(
         }
         messages.push({
           tool_call_id: toolCall.id,
-          role: "tool",
+          role: "function",
           name: functionName,
           content: functionResponse,
         });
