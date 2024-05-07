@@ -158,7 +158,7 @@ export async function getChatResponseStream(
   // Step 2: check if the model wanted to call a function
   const toolCalls = responseMessage.tool_calls;
   if (responseMessage.tool_calls) {
-    const availableFunctions = {
+    const availableFunctions: any = {
       get_current_weather: getCurrentWeather,
       get_timeline_data: getTimelineData,
       get_today_date_time: getTodayDateTime,
@@ -170,7 +170,7 @@ export async function getChatResponseStream(
       const functionArgs = JSON.parse(toolCall.function.arguments);
       try {
         // Check if function is async and await its result
-        let functionResponse;
+        let functionResponse: any;
         // Determine the correct arguments based on the function name
         if (functionName === "get_current_weather") {
           // Assuming getCurrentWeather function takes 'location' and 'unit' as arguments
