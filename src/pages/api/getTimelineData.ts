@@ -22,52 +22,58 @@ export default async function handler(
     } = req.body;
     console.log(req.body);
     const headers = data ? data[0] : [];
-    const jsonData = data?.length > 0 ? data
-      .slice(1)
-      .filter((row) => {
-        const hasTitle = row.length > 0 && row[3];
-        if (!hasTitle) return false;
+    const jsonData =
+      data?.length > 0
+        ? data
+            .slice(1)
+            .filter((row) => {
+              const hasTitle = row.length > 0 && row[3];
+              if (!hasTitle) return false;
 
-        const taskOwner = row[4] ? row[4].trim() : null;
-        const startDate = row[5] ? convertDateString(row[5].trim()) : null;
-        const dueDate = row[6] ? convertDateString(row[6].trim()) : null;
+              const taskOwner = row[4] ? row[4].trim() : null;
+              const startDate = row[5]
+                ? convertDateString(row[5].trim())
+                : null;
+              const dueDate = row[6] ? convertDateString(row[6].trim()) : null;
 
-        // Owner filter
-        const ownerMatch =
-          !ownerFilter ||
-          (taskOwner &&
-            (Array.isArray(ownerFilter)
-              ? ownerFilter.includes(taskOwner)
-              : ownerFilter === taskOwner));
+              // Owner filter
+              const ownerMatch =
+                !ownerFilter ||
+                (taskOwner &&
+                  (Array.isArray(ownerFilter)
+                    ? ownerFilter.includes(taskOwner)
+                    : ownerFilter === taskOwner));
 
-        // Start date filter
-        const startDateMatch =
-          !startDateFilter ||
-          (startDate &&
-            startDate >= new Date(convertDateString(startDateFilter)));
+              // Start date filter
+              const startDateMatch =
+                !startDateFilter ||
+                (startDate &&
+                  startDate >= new Date(convertDateString(startDateFilter)));
 
-        // Due date filter
-        const dueDateMatch =
-          !dueDateFilter ||
-          (dueDate && dueDate <= new Date(convertDateString(dueDateFilter)));
+              // Due date filter
+              const dueDateMatch =
+                !dueDateFilter ||
+                (dueDate &&
+                  dueDate <= new Date(convertDateString(dueDateFilter)));
 
-        return ownerMatch && startDateMatch && dueDateMatch;
-      })
-      .map((row) => {
-        let obj = headers.reduce((acc, header, index) => {
-          acc[header.trim()] = row[index] ? row[index].trim() : null;
-          return acc;
-        }, {});
+              return ownerMatch && startDateMatch && dueDateMatch;
+            })
+            .map((row) => {
+              let obj = headers.reduce((acc, header, index) => {
+                acc[header.trim()] = row[index] ? row[index].trim() : null;
+                return acc;
+              }, {});
 
-        // Split TASK OWNER by comma and trim each name
-        if (obj["TASK OWNER"]) {
-          obj["TASK OWNER"] = obj["TASK OWNER"]
-            .split(",")
-            .map((name) => name.trim());
-        }
+              // Split TASK OWNER by comma and trim each name
+              if (obj["TASK OWNER"]) {
+                obj["TASK OWNER"] = obj["TASK OWNER"]
+                  .split(",")
+                  .map((name) => name.trim());
+              }
 
-        return obj;
-      });
+              return obj;
+            })
+        : {};
 
     res.status(200).json(jsonData);
   } catch (error) {
