@@ -23,7 +23,7 @@ export default async function handler(
     console.log(req.body);
     const headers = data ? data[0] : [];
     const jsonData =
-      data?.length > 0
+      data && data.length > 0
         ? data
             .slice(1)
             .filter((row) => {
