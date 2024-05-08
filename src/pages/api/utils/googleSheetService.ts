@@ -2,10 +2,15 @@
 import { google } from "googleapis";
 
 export async function loadSheet(spreadsheetId: string, range: string) {
-  const credentialsJSON = Buffer.from(
-    process.env.GOOGLE_APPLICATION_CREDENTIALS,
-    "base64"
-  ).toString("utf8");
+  const googleCredentials = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+
+  if (!googleCredentials) {
+    throw new Error("GOOGLE_APPLICATION_CREDENTIALS is not set");
+  }
+
+  const credentialsJSON = Buffer.from(googleCredentials, "base64").toString(
+    "utf8"
+  );
 
   try {
     const auth = new google.auth.GoogleAuth({
