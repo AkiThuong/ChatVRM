@@ -41,10 +41,18 @@ export default async function handler(
                 !ownerFilter ||
                 (taskOwner &&
                   (Array.isArray(ownerFilter)
-                    ? ownerFilter
-                        .map((item: string) => item.toLowerCase())
-                        .includes(taskOwner.toLowerCase())
-                    : ownerFilter.toLowerCase() === taskOwner.toLowerCase()));
+                    ? taskOwner
+                        .toLowerCase()
+                        .split(",")
+                        .some((taskOwnerItem) =>
+                          ownerFilter
+                            .map((item: string) => item.toLowerCase())
+                            .includes(taskOwnerItem.trim())
+                        )
+                    : taskOwner
+                        .toLowerCase()
+                        .split(",")
+                        .includes(ownerFilter.toLowerCase())));
 
               // Start date filter
               const startDateMatch =
