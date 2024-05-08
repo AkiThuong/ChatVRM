@@ -1,9 +1,23 @@
 {
-  "extends": ["next", "next/core-web-vitals"],
-
+  "extends": ["next/core-web-vitals"],
   "rules": {
-    // Ensure correct rule names are used
-    "react/no-unused-state": "warn" // an example of a valid rule
-    // Remove or correct the 'rule-name' entry
-  }
+    // Your custom rules here
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
+      "rules": {
+        // Rules specifically for your source files
+      }
+    }
+  ]
 }

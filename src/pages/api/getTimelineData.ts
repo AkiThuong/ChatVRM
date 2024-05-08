@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { loadSheet } from "./utils/googleSheetService";
 import type { NextApiRequest, NextApiResponse } from "next/types";
 export default async function handler(
@@ -11,7 +10,7 @@ export default async function handler(
       "PlanningTemplate (Aki)!B4:J100"
     );
 
-    if (data.length === 0) {
+    if (data && data.length === 0) {
       return res.status(404).json({ error: "No data found" });
     }
 

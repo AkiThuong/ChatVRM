@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next build && next start",
     "export": "next export",
-    "lint": "next lint",
+    "lint": "eslint src/**/*.{js,jsx,ts,tsx}",
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
@@ -44,6 +44,7 @@
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
     "@types/three": "0.149.0",
+    "@vercel/style-guide": "^6.0.0",
     "autoprefixer": "^10.4.14",
     "eslint": "8.36.0",
     "eslint-plugin-react": "^7.34.1",
@@ -56,4 +57,3 @@
     "node": "20.x"
   }
 }
-
