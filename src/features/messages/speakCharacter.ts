@@ -25,10 +25,11 @@ const createSpeakCharacter = () => {
       if (now - lastTime < 1000) {
         await wait(1000 - (now - lastTime));
       }
-      const hiraganaText = await convertToHiragana(screenplay.talk.message);
-      const buffer = await fetchAudio(hiraganaText.message, koeiroApiKey).catch(
-        () => null
-      );
+      // const hiraganaText = await convertToHiragana(screenplay.talk.message);
+      const buffer = await fetchAudio(
+        screenplay.talk.message,
+        koeiroApiKey
+      ).catch(() => null);
       lastTime = Date.now();
       return buffer;
     });
