@@ -120,13 +120,14 @@ export async function getChatResponseStream(
       type: "function",
       function: {
         name: "get_timeline_data",
-        description: "Get the timeline data of CLS Staff",
+        description: "Get the task list data of CLS Staff",
         parameters: {
           type: "object",
           properties: {
             ownerFilter: {
               type: "string",
-              description: "Task Owner name",
+              description:
+                "Task Owner name, Leave it blank if not specified, only add Human Name, e.g. 'Aki'",
             },
           },
         },
