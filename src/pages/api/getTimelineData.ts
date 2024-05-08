@@ -68,7 +68,7 @@ export default async function handler(
               if (obj["TASK OWNER"]) {
                 obj["TASK OWNER"] = obj["TASK OWNER"]
                   .split(",")
-                  .map((name) => name.trim());
+                  .map((name: string) => name.trim());
               }
 
               return obj;
