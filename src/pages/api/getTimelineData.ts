@@ -85,7 +85,7 @@ export default async function handler(
 }
 
 // Helper function to convert "DD/MM/YYYY" to "YYYY-MM-DD" for correct Date parsing
-function convertDateString(dateStr) {
+function convertDateString(dateStr: string) {
   const parts = dateStr.split("/");
   return new Date(parts[2], parts[1] - 1, parts[0]); // months are 0-based in JS
 }
