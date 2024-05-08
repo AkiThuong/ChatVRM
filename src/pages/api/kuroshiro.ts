@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable no-console, no-unused-vars */
+declare module "kuroshiro";
 import Kuroshiro from "kuroshiro";
 // Initialize kuroshiro with an instance of analyzer (You could check the [apidoc](#initanalyzer) for more information):
 // For this example, you should npm install and import the kuromoji analyzer first
