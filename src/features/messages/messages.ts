@@ -4,9 +4,9 @@ import { KoeiroParam } from "../constants/koeiroParam";
 // ChatGPT API
 export type Message = {
   role: "assistant" | "system" | "user" | "function";
-  content: string;
+  content: any;
   tool_call_id?: any;
-  name?: string;
+  name?: any;
 };
 
 const talkStyles = [

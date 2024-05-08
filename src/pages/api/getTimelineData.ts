@@ -41,8 +41,10 @@ export default async function handler(
                 !ownerFilter ||
                 (taskOwner &&
                   (Array.isArray(ownerFilter)
-                    ? ownerFilter.includes(taskOwner)
-                    : ownerFilter === taskOwner));
+                    ? ownerFilter
+                        .map((item: string) => item.toLowerCase())
+                        .includes(taskOwner.toLowerCase())
+                    : ownerFilter.toLowerCase() === taskOwner.toLowerCase()));
 
               // Start date filter
               const startDateMatch =
@@ -65,12 +67,13 @@ export default async function handler(
               }, {});
 
               // Split TASK OWNER by comma and trim each name
+
+              // Split TASK OWNER by comma and trim each name
               if (obj["TASK OWNER"]) {
                 obj["TASK OWNER"] = obj["TASK OWNER"]
                   .split(",")
                   .map((name: string) => name.trim());
               }
-
               return obj;
             })
         : {};
@@ -88,3 +91,4 @@ function convertDateString(dateStr: string) {
   const parts = dateStr.split("/");
   return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0])); // months are 0-based in JS
 }
+

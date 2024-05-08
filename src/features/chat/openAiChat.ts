@@ -163,7 +163,9 @@ export async function getChatResponseStream(
       get_timeline_data: getTimelineData,
       get_today_date_time: getTodayDateTime,
     };
-    messages.push(responseMessage);
+    if (responseMessage.content !== null) {
+      messages.push(responseMessage);
+    }
     for (const toolCall of toolCalls) {
       const functionName = toolCall.function.name;
       const functionToCall = availableFunctions[functionName];
@@ -183,12 +185,14 @@ export async function getChatResponseStream(
         } else {
           throw new Error("Unknown function called");
         }
-        messages.push({
-          tool_call_id: toolCall.id,
-          role: "function",
-          name: functionName as string,
-          content: functionResponse as string,
-        });
+        if (functionResponse !== null) {
+          messages.push({
+            tool_call_id: toolCall.id,
+            role: "function",
+            name: functionName,
+            content: functionResponse,
+          });
+        }
       } catch (error) {
         console.error(`Error calling function ${functionName}:`, error);
         // Handle error or push an error message to the messages array
