@@ -11,7 +11,7 @@ import {
 } from "@/features/constants/koeiroParam";
 import { Link } from "./link";
 import { atom, useAtomValue, useSetAtom } from "jotai";
-export const currentLanguageAtom = atom("ja-JP");
+export const currentLanguageAtom = atom("en-US");
 
 type Props = {
   openAiKey: string;
@@ -116,8 +116,8 @@ export const Settings = ({
             </div>
 
             <select onChange={handleChange}>
-              <option value="ja-JP">日本語</option>
               <option value="en-US">English</option>
+              <option value="ja-JP">日本語</option>
               <option value="vi-VN">Tiếng Việt</option>
             </select>
           </div>
