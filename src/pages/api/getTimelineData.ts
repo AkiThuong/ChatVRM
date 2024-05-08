@@ -44,7 +44,7 @@ export default async function handler(
                     ? taskOwner
                         .toLowerCase()
                         .split(",")
-                        .some((taskOwnerItem) =>
+                        .some((taskOwnerItem: string) =>
                           ownerFilter
                             .map((item: string) => item.toLowerCase())
                             .includes(taskOwnerItem.trim())
