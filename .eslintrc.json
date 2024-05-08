@@ -1,9 +1,7 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "extends": ["next/core-web-vitals"],
   "rules": {
-    // Your custom rules here
+    "react/no-unused-state": "warn"
   },
   "env": {
     "browser": true,
@@ -17,9 +15,7 @@
   "overrides": [
     {
       "files": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
-      "rules": {
-        // Rules specifically for your source files
-      }
+      "rules": {}
     }
   ]
 }
