@@ -21,7 +21,7 @@ export default async function handler(
       dueDateFilter, // Date string, e.g., '08/05/2024'
     } = req.body;
     console.log(req.body);
-    const headers = data[0];
+    const headers = data ? data[0] : [];
     const jsonData = data
       .slice(1)
       .filter((row) => {
