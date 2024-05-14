@@ -4,7 +4,7 @@ export const Meta = () => {
   const title = "ReGuardian AI";
   const description =
     "ReGuardian AI Specialist - Answer all your questions about ReGuardian Event";
-  const imageUrl = "https://pixiv.github.io/ChatVRM/ogp.png";
+  const imageUrl = "https://ami.re-guardian.com/mainscreen_ami.jpg";
   return (
     <Head>
       <title>{title}</title>
