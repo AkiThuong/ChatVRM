@@ -97,20 +97,18 @@ export const Settings = ({
             </div>
           </div> */}
           <div className="my-40">
-            {/* <div className="my-8">
+            <div className="my-8">
               <div className="my-16 typography-20 font-bold">
-                キャラクター設定（システムプロンプト）
+                Prompt Setting
               </div>
-              <TextButton onClick={onClickResetSystemPrompt}>
-                キャラクター設定リセット
-              </TextButton>
+              <TextButton onClick={onClickResetSystemPrompt}>Reset</TextButton>
             </div>
 
             <textarea
               value={systemPrompt}
               onChange={onChangeSystemPrompt}
               className="px-16 py-8  bg-surface1 hover:bg-surface1-hover h-168 rounded-8 w-full"
-            ></textarea> */}
+            ></textarea>
             <div className="my-8">
               <div className="my-16 typography-20 font-bold">
                 Change Language
