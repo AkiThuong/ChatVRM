@@ -1,9 +1,9 @@
 import { buildUrl } from "@/utils/buildUrl";
 import Head from "next/head";
 export const Meta = () => {
-  const title = "ChatVRM";
+  const title = "ReGuardian AI";
   const description =
-    "Webブラウザだけで3Dキャラクターとの会話を、マイクやテキスト入力、音声合成を用いて楽しめます。キャラクター（VRM）の変更や性格設定、音声調整もできます。";
+    "ReGuardian AI Specialist - Answer all your questions about ReGuardian Event";
   const imageUrl = "https://pixiv.github.io/ChatVRM/ogp.png";
   return (
     <Head>
