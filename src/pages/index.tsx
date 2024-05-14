@@ -98,13 +98,6 @@ export default function Home() {
     [viewer, koeiromapKey]
   );
 
-  useEffect(() => {
-    console.log("Updated isSpeaking state:", isSpeaking);
-  }, [isSpeaking]);
-
-  useEffect(() => {
-    console.log("final Sentence:", isFinalSentence);
-  }, [isFinalSentence]);
   /**
    * アシスタントとの会話を行う
    */
@@ -181,11 +174,12 @@ export default function Home() {
 
           // 返答を一文単位で切り出して処理する
           const sentenceMatch = receivedMessage.match(
-            /^(.+?[。．！？\n.]|.{10,}[、,])/
+            /^(.+?[.!?。！？])(\s+|$)/
           );
           if (sentenceMatch && sentenceMatch[0]) {
             const sentence = sentenceMatch[0];
             sentences.push(sentence);
+            console.log("sentence", sentence);
             receivedMessage = receivedMessage
               .slice(sentence.length)
               .trimStart();

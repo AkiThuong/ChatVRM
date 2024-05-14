@@ -63,8 +63,8 @@ export const Settings = ({
       </div>
       <div className="max-h-full overflow-auto">
         <div className="text-text1 max-w-3xl mx-auto px-24 py-64 ">
-          <div className="my-24 typography-32 font-bold">設定</div>
-          <div className="my-24">
+          <div className="my-24 typography-32 font-bold">Settings</div>
+          {/* <div className="my-24">
             <div className="my-16 typography-20 font-bold">OpenAI API キー</div>
             <input
               className="text-ellipsis px-16 py-8 w-col-span-2 bg-surface1 hover:bg-surface1-hover rounded-8"
@@ -95,9 +95,9 @@ export const Settings = ({
             <div className="my-8">
               <TextButton onClick={onClickOpenVrmFile}>VRMを開く</TextButton>
             </div>
-          </div>
+          </div> */}
           <div className="my-40">
-            <div className="my-8">
+            {/* <div className="my-8">
               <div className="my-16 typography-20 font-bold">
                 キャラクター設定（システムプロンプト）
               </div>
@@ -110,9 +110,11 @@ export const Settings = ({
               value={systemPrompt}
               onChange={onChangeSystemPrompt}
               className="px-16 py-8  bg-surface1 hover:bg-surface1-hover h-168 rounded-8 w-full"
-            ></textarea>
+            ></textarea> */}
             <div className="my-8">
-              <div className="my-16 typography-20 font-bold">言語選択</div>
+              <div className="my-16 typography-20 font-bold">
+                Change Language
+              </div>
             </div>
 
             <select onChange={handleChange}>
@@ -125,9 +127,9 @@ export const Settings = ({
           {chatLog.length > 0 && (
             <div className="my-40">
               <div className="my-8 grid-cols-2">
-                <div className="my-16 typography-20 font-bold">会話履歴</div>
+                <div className="my-16 typography-20 font-bold">Chat Log</div>
                 <TextButton onClick={onClickResetChatLog}>
-                  会話履歴リセット
+                  Clear Chat Log
                 </TextButton>
               </div>
               <div className="my-8">

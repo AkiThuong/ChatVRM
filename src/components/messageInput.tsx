@@ -53,7 +53,7 @@ export const MessageInput = ({
         if (!isChatProcessing && !isMicRecording && micToggled) {
           onClickMicButton(); // Execute function after the delay only if conditions still hold
         }
-      }, 2000); // Delay set to 1000 milliseconds (1 second)
+      }, 1000); // Delay set to 1000 milliseconds (1 second)
     }
 
     // Clean up function that clears the timeout if dependencies change or if isSpeaking turns true
@@ -78,10 +78,8 @@ export const MessageInput = ({
             <div className="flex justify-center">
               <IconButton
                 iconName="24/Microphone"
-                className={`mx-4 hover:bg-primary-hover active:bg-primary-press disabled:bg-secondary-disabled ${
-                  micToggled
-                    ? "bg-black hover:bg-secondary-hover"
-                    : "bg-gray-400"
+                className={`mx-4 bg-primary hover:bg-primary-hover active:bg-primary-press disabled:bg-[primary]-disabled ${
+                  micToggled ? "bg-black hover:bg-primary-hover" : "bg-gray-400"
                 } `}
                 isProcessing={isMicRecording}
                 disabled={isChatProcessing || isSpeaking}
@@ -99,7 +97,7 @@ export const MessageInput = ({
             </div>
             <input
               type="text"
-              placeholder="聞きたいことをいれてね"
+              placeholder="Please say something..."
               onChange={onChangeUserMessage}
               onKeyDown={handleKeyDown}
               disabled={isChatProcessing || isSpeaking}
