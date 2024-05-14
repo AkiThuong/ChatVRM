@@ -4,6 +4,8 @@ import { Viewer } from "../vrmViewer/viewer";
 import { Screenplay } from "./messages";
 import { Talk } from "./messages";
 import { atom, useAtomValue, useSetAtom } from "jotai";
+import { buildUrl } from "@/utils/buildUrl";
+import { loadVRMAnimation } from "@/lib/VRMAnimation/loadVRMAnimation";
 export const isSpeakingAtom = atom(false);
 
 const createSpeakCharacter = () => {
@@ -36,13 +38,26 @@ const createSpeakCharacter = () => {
 
     prevFetchPromise = fetchPromise;
     prevSpeakPromise = Promise.all([fetchPromise, prevSpeakPromise]).then(
-      ([audioBuffer]) => {
+      async ([audioBuffer]) => {
         setIsSpeaking(true);
         onStart?.();
         if (!audioBuffer) {
           setIsSpeaking(false);
           return;
         }
+        let vrma;
+        // Now that the function is async, you can use await here
+        // if (screenplay.expression === "angry") {
+        //   vrma = await loadVRMAnimation(buildUrl("/vrma/VRMA_05.vrma"));
+        // } else if (screenplay.expression === "happy") {
+        //   vrma = await loadVRMAnimation(buildUrl("/vrma/VRMA_02.vrma"));
+        // } else if (screenplay.expression === "relaxed") {
+        //   vrma = await loadVRMAnimation(buildUrl("/vrma/VRMA_03.vrma"));
+        // } else {
+        //   vrma = await loadVRMAnimation(buildUrl("/idle_loop.vrma"));
+        // }
+
+        // if (vrma) viewer.model?.loadAnimation(vrma);
         return viewer.model?.speak(audioBuffer, screenplay);
       }
     );

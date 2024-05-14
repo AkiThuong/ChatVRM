@@ -115,7 +115,7 @@ export const MessageInput = ({
           </div>
         </div>
         <div className="py-4 bg-[#413D43] text-center text-white font-Montserrat">
-          powered by VRoid, Koemotion, ChatGPT API
+          Presented by CLS Entertainment Co., LTD.
         </div>
       </div>
     </div>
