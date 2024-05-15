@@ -1,4 +1,4 @@
-import {  OpenAIApi } from "openai";
+import { Configuration, OpenAIApi } from "openai";
 import { Message } from "../messages/messages";
 
 export async function getChatResponse(messages: Message[], apiKey: string) {
