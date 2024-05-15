@@ -18,7 +18,7 @@ export default async function handler(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "xi-api-key": process.env.ELEVEN_LAB_TTS_API_KEY || "0e8ef53723b8d3b0d39059df4e5c42ab", // Provide a fallback empty string
+      "xi-api-key": process.env.ELEVEN_LAB_TTS_API_KEY || "", // Provide a fallback empty string
     },
     body: JSON.stringify({
       model_id: "eleven_multilingual_v2",
@@ -31,7 +31,7 @@ export default async function handler(
   };
   try {
     const externalResponse = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voice_model}?optimize_streaming_latency=4`,
+      `https://api.elevenlabs.io/v1/text-to-speech/b1cT4UgbQB3rVfN6rC3n?optimize_streaming_latency=4`,
       options
     );
 
