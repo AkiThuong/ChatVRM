@@ -40,6 +40,8 @@ export async function getChatResponseStream(
   if (!apiKey) {
     throw new Error("Invalid API Key");
   }
+
+  messages = messages.slice(-20);
   function getTodayDateTime() {
     const today = new Date();
     const date = today.getDate();
@@ -50,43 +52,43 @@ export async function getChatResponseStream(
     const seconds = today.getSeconds();
     return `${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
-  // const headers: Record<string, string> = {
-  //   "Content-Type": "application/json",
-  //   Authorization: `Bearer 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`,
-  // };
-
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
+    Authorization: `Bearer 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`,
   };
 
-// const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-//   headers: headers,
-//   method: "POST",
-//   body: JSON.stringify({
-//     model: "llama3-8b-8192",
-//     messages: [
-//       ...messages,
-//       { role: "system", content: `Today: ${getTodayDateTime()}` },
-//     ],
-//     stream: true,
-//     max_tokens: 200,
-//   }),
-// });
+  // const headers: Record<string, string> = {
+  //   "Content-Type": "application/json",
+  //   Authorization: `Bearer ${apiKey}`,
+  // };
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    headers: headers,
-    method: "POST",
-    body: JSON.stringify({
-      model: "gpt-4o",
-      messages: [
-        ...messages,
-        { role: "system", content: `Today: ${getTodayDateTime()}` },
-      ],
-      stream: true,
-      max_tokens: 200,
-    }),
-  });
+const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+  headers: headers,
+  method: "POST",
+  body: JSON.stringify({
+    model: "llama3-8b-8192",
+    messages: [
+      ...messages,
+      { role: "system", content: `Today: ${getTodayDateTime()}` },
+    ],
+    stream: true,
+    max_tokens: 200,
+  }),
+});
+
+  // const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  //   headers: headers,
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     model: "gpt-4o",
+  //     messages: [
+  //       ...messages,
+  //       { role: "system", content: `Today: ${getTodayDateTime()}` },
+  //     ],
+  //     stream: true,
+  //     max_tokens: 200,
+  //   }),
+  // });
 
   const reader = res.body?.getReader();
   if (res.status !== 200 || !reader) {
