@@ -18,7 +18,7 @@ export default async function handler(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "xi-api-key": process.env.ELEVEN_LAB_TTS_API_KEY || "", // Provide a fallback empty string
+      "xi-api-key": "0e8ef53723b8d3b0d39059df4e5c42ab" || "", // Provide a fallback empty string
     },
     body: JSON.stringify({
       model_id: "eleven_multilingual_v2",
