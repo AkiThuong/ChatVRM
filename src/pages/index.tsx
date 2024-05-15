@@ -171,11 +171,17 @@ export default function Home() {
             tag = tagMatch[0];
             receivedMessage = receivedMessage.slice(tag.length);
           }
+          // Remove expressions between asterisks
+          receivedMessage = receivedMessage.replace(/\*[^*]+\*/g, '');
 
+
+          console.log("receivedMessage",receivedMessage)
           // 返答を一文単位で切り出して処理する
           const sentenceMatch = receivedMessage.match(
-            /^(.+?[.!?。！？])(\s+|$)/
+            /^(.+?[.!?。！？:;])(\s+|$)/
           );
+
+          
           if (sentenceMatch && sentenceMatch[0]) {
             const sentence = sentenceMatch[0];
             sentences.push(sentence);
