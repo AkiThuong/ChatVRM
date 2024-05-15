@@ -1,10 +1,16 @@
 import { Configuration, OpenAIApi } from "openai";
 import { Message } from "../messages/messages";
+import {Groq} from 'groq-sdk'
 
+// const groq = new Groq({
+//     apiKey: "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"
+// });
 export async function getChatResponse(messages: Message[], apiKey: string) {
   if (!apiKey) {
     throw new Error("Invalid API Key");
   }
+
+  
 
   const configuration = new Configuration({
     apiKey: apiKey,
@@ -19,6 +25,7 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
     model: "gpt-4o",
     messages: messages,
   });
+
 
   const [aiRes] = data.choices;
   const message = aiRes.message?.content || "エラーが発生しました";
@@ -43,15 +50,35 @@ export async function getChatResponseStream(
     const seconds = today.getSeconds();
     return `${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
+  // const headers: Record<string, string> = {
+  //   "Content-Type": "application/json",
+  //   Authorization: `Bearer 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`,
+  // };
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
   };
+
+// const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+//   headers: headers,
+//   method: "POST",
+//   body: JSON.stringify({
+//     model: "llama3-8b-8192",
+//     messages: [
+//       ...messages,
+//       { role: "system", content: `Today: ${getTodayDateTime()}` },
+//     ],
+//     stream: true,
+//     max_tokens: 200,
+//   }),
+// });
+
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: headers,
     method: "POST",
     body: JSON.stringify({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
       messages: [
         ...messages,
         { role: "system", content: `Today: ${getTodayDateTime()}` },
