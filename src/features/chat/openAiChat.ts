@@ -106,7 +106,15 @@ export async function getChatResponseStream(
                 .replace(/^data: /gm, "")
                 .split("\n")
                 .filter((c) => Boolean(c.length) && c !== "[DONE]")
-                .map((c) => JSON.parse(c)) // First and only JSON parsing
+                .map((c) => {
+                  try {
+                    return JSON.parse(c); // Attempt to parse JSON
+                  } catch (e) {
+                    console.error("Failed to parse JSON, skipping:", c);
+                    return null; // Return null if JSON is malformed
+                  }
+                })
+                .filter((c) => c !== null) // Remove null entries (malformed JSON)
             : [];
           for (const chunk of chunks) {
             const messagePiece = chunk.choices[0].delta.content; // Directly use chunk as an object
