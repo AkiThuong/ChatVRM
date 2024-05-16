@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 import { Message } from "../messages/messages";
-import {Groq} from 'groq-sdk'
+import { Groq } from "groq-sdk";
 
 // const groq = new Groq({
 //     apiKey: "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"
@@ -9,8 +9,6 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
   if (!apiKey) {
     throw new Error("Invalid API Key");
   }
-
-  
 
   const configuration = new Configuration({
     apiKey: apiKey,
@@ -25,7 +23,6 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
     model: "gpt-4o",
     messages: messages,
   });
-
 
   const [aiRes] = data.choices;
   const message = aiRes.message?.content || "エラーが発生しました";
@@ -62,19 +59,19 @@ export async function getChatResponseStream(
   //   Authorization: `Bearer ${apiKey}`,
   // };
 
-const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-  headers: headers,
-  method: "POST",
-  body: JSON.stringify({
-    model: "llama3-8b-8192",
-    messages: [
-      ...messages,
-      { role: "system", content: `Today: ${getTodayDateTime()}` },
-    ],
-    stream: true,
-    max_tokens: 200,
-  }),
-});
+  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    headers: headers,
+    method: "POST",
+    body: JSON.stringify({
+      model: "llama3-8b-8192",
+      messages: [
+        ...messages,
+        { role: "system", content: `Today: ${getTodayDateTime()}` },
+      ],
+      stream: true,
+      max_tokens: 200,
+    }),
+  });
 
   // const res = await fetch("https://api.openai.com/v1/chat/completions", {
   //   headers: headers,
@@ -103,12 +100,16 @@ const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           const { done, value } = await reader.read();
           if (done) break;
           const data = decoder.decode(value);
+          console.log("data", data);
           const chunks = data
-            .split("data:")
-            .filter((val) => !!val && val.trim() !== "[DONE]");
+            ? data
+                .replace(/^data: /gm, "")
+                .split("\n")
+                .filter((c) => Boolean(c.length) && c !== "[DONE]")
+                .map((c) => JSON.parse(c)) // First and only JSON parsing
+            : [];
           for (const chunk of chunks) {
-            const json = JSON.parse(chunk);
-            const messagePiece = json.choices[0].delta.content;
+            const messagePiece = chunk.choices[0].delta.content; // Directly use chunk as an object
             if (!!messagePiece) {
               controller.enqueue(messagePiece);
             }
