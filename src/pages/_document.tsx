@@ -17,7 +17,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body style={{ backgroundImage: `url(${buildUrl("/BG-A.png")})` }}>
+      <body style={{ backgroundImage: `url(${buildUrl("/AI_BG-01.png")})` }}>
         <Main />
         <NextScript />
       </body>

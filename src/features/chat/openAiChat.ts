@@ -32,7 +32,8 @@ export async function getChatResponse(messages: Message[], apiKey: string) {
 
 export async function getChatResponseStream(
   messages: Message[],
-  apiKey: string
+  apiKey: string,
+  currentUser: string
 ) {
   if (!apiKey) {
     throw new Error("Invalid API Key");
@@ -58,16 +59,20 @@ export async function getChatResponseStream(
   //   "Content-Type": "application/json",
   //   Authorization: `Bearer ${apiKey}`,
   // };
-
+  messages = [
+    ...messages,
+    {
+      role: "system",
+      content: `Today: ${getTodayDateTime()}. You are talking with ${currentUser}`,
+    },
+  ];
+  console.log(messages);
   const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     headers: headers,
     method: "POST",
     body: JSON.stringify({
       model: "llama3-8b-8192",
-      messages: [
-        ...messages,
-        { role: "system", content: `Today: ${getTodayDateTime()}` },
-      ],
+      messages: messages,
       stream: true,
       max_tokens: 200,
     }),

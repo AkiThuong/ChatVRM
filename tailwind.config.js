@@ -17,16 +17,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#0E942D",
-        "primary-hover": "#08591B",
-        "primary-press": "#063D13",
-        "primary-disabled": "#063D13",
+        primary: "#0E61AA",
+        "primary-hover": "#1281E3",
+        "primary-press": "#094171",
+        "primary-disabled": "#052039",
         secondary: "#3FC2EE",
         "secondary-hover": "#0D7394",
         "secondary-press": "#084559",
         "secondary-disabled": "#084559",
-        base: "#BEF9CC",
-        "text-primary": "#514062",
+        base: "#B3D9F9",
+        "text-primary": "#052039",
       },
       fontFamily: {
         M_PLUS_2: ["Montserrat", "M_PLUS_2", "sans-serif"],

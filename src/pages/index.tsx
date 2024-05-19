@@ -25,7 +25,11 @@ import { FaceRecognition } from "@/components/FaceRecognitionModule";
 export const isFinalSentenceAtom = atom(false);
 export default function Home() {
   const [currentUser, setCurrentUser] = useState<string>("");
-
+  const currentUserRef = useRef(currentUser);
+  useEffect(() => {
+    currentUserRef.current = currentUser;
+    console.log("Updated currentUser state:", currentUser);
+  }, [currentUser]);
   const handleCurrentUserChange = (newUser: string) => {
     setCurrentUser(newUser);
   };
@@ -145,10 +149,11 @@ export default function Home() {
         },
         ...messageLog,
       ];
-
+      console.log("currentUser", currentUser);
       const stream = await getChatResponseStream(
         messages,
-        openAiKey || svAPIkey
+        openAiKey || svAPIkey,
+        currentUserRef.current
       ).catch((e) => {
         console.error(e);
         return null;
@@ -258,24 +263,23 @@ export default function Home() {
         }}
       >
         <FaceRecognition onCurrentUserChange={handleCurrentUserChange} />
+        <h1>{currentUser}</h1>
       </div>
-      <div style={{ position: "absolute", top: 0, width: "100%" }}>
-        <Menu
-          openAiKey={openAiKey ?? ""}
-          systemPrompt={systemPrompt}
-          chatLog={chatLog}
-          koeiroParam={koeiroParam}
-          assistantMessage={assistantMessage}
-          koeiromapKey={koeiromapKey}
-          onChangeAiKey={setOpenAiKey}
-          onChangeSystemPrompt={setSystemPrompt}
-          onChangeChatLog={handleChangeChatLog}
-          onChangeKoeiromapParam={setKoeiroParam}
-          handleClickResetChatLog={() => setChatLog([])}
-          handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
-          onChangeKoeiromapKey={setKoeiromapKey}
-        />
-      </div>
+      <Menu
+        openAiKey={openAiKey ?? ""}
+        systemPrompt={systemPrompt}
+        chatLog={chatLog}
+        koeiroParam={koeiroParam}
+        assistantMessage={assistantMessage}
+        koeiromapKey={koeiromapKey}
+        onChangeAiKey={setOpenAiKey}
+        onChangeSystemPrompt={setSystemPrompt}
+        onChangeChatLog={handleChangeChatLog}
+        onChangeKoeiromapParam={setKoeiroParam}
+        handleClickResetChatLog={() => setChatLog([])}
+        handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
+        onChangeKoeiromapKey={setKoeiromapKey}
+      />
     </div>
   );
 }
