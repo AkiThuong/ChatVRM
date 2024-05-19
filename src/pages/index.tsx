@@ -20,7 +20,7 @@ import { Meta } from "@/components/meta";
 import { useAtomValue, useSetAtom } from "jotai";
 import { isSpeakingAtom } from "@/features/messages/speakCharacter";
 import { atom } from "jotai";
-import { FaceRecognition } from "@/components/faceRecognitionModule";
+import { FaceRecognition } from "@/components/FaceRecognitionModule";
 
 export const isFinalSentenceAtom = atom(false);
 export default function Home() {
