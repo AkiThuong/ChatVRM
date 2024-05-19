@@ -101,6 +101,7 @@ export const Menu = ({
   return (
     <>
       <div className="absolute z-10 m-24">
+        {" "}
         <div className="grid grid-flow-col gap-[8px]">
           <IconButton
             iconName="24/Menu"
@@ -126,6 +127,7 @@ export const Menu = ({
           )}
         </div>
       </div>
+
       {showChatLog && <ChatLog messages={chatLog} />}
       {showSettings && (
         <Settings

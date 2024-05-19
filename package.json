@@ -11,7 +11,7 @@
     "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "@charcoal-ui/icons": "^2.6.0",
+    "@charcoal-ui/icons": "^2.10.0",
     "@eslint/create-config": "1.1.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/dom-speech-recognition": "^0.0.1",
@@ -21,6 +21,7 @@
     "@vercel/analytics": "^1.2.2",
     "autoprefixer": "^10.4.19",
     "eslint-config-next": "13.2.4",
+    "face-api.js": "^0.22.2",
     "googleapis": "^136.0.0",
     "groq-sdk": "^0.3.3",
     "jotai": "^2.8.0",
@@ -28,7 +29,7 @@
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "next": "13.2.4",
     "node-fetch": "^3.3.2",
-    "openai": "^3.2.1",
+    "openai": "^3.3.0",
     "prettier": "^3.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -36,25 +37,24 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
-    "@charcoal-ui/tailwind-config": "^2.6.0",
-    "@eslint/js": "^9.2.0",
-    "@gltf-transform/core": "^2.4.6",
-    "@pixiv/three-vrm": "^1.0.9",
-    "@types/next": "^9.0.0",
+    "@charcoal-ui/tailwind-config": "^2.10.0",
+    "@eslint/js": "^9.3.0",
+    "@gltf-transform/core": "^2.5.1",
+    "@pixiv/three-vrm": "^1.0.10",
     "@types/node": "18.15.10",
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
-    "@types/three": "0.149.0",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
+    "@types/three": "0.151.0",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
     "@vercel/style-guide": "^6.0.0",
     "autoprefixer": "^10.4.14",
-    "eslint": "8.36.0",
+    "eslint": "8.57.0",
     "eslint-plugin-react": "^7.34.1",
-    "globals": "^15.1.0",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.3.1",
-    "typescript-eslint": "^7.8.0"
+    "globals": "^15.2.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript-eslint": "^7.9.0"
   },
   "engines": {
     "node": "20.x"

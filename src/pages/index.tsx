@@ -20,9 +20,15 @@ import { Meta } from "@/components/meta";
 import { useAtomValue, useSetAtom } from "jotai";
 import { isSpeakingAtom } from "@/features/messages/speakCharacter";
 import { atom } from "jotai";
+import { FaceRecognition } from "@/components/faceRecognitionModule";
 
 export const isFinalSentenceAtom = atom(false);
 export default function Home() {
+  const [currentUser, setCurrentUser] = useState<string>("");
+
+  const handleCurrentUserChange = (newUser: string) => {
+    setCurrentUser(newUser);
+  };
   const { viewer } = useContext(ViewerContext);
   const isSpeaking = useAtomValue(isSpeakingAtom);
   const setIsSpeaking = useSetAtom(isSpeakingAtom);
@@ -172,16 +178,14 @@ export default function Home() {
             receivedMessage = receivedMessage.slice(tag.length);
           }
           // Remove expressions between asterisks
-          receivedMessage = receivedMessage.replace(/\*[^*]+\*/g, '');
+          receivedMessage = receivedMessage.replace(/\*[^*]+\*/g, "");
 
-
-          console.log("receivedMessage",receivedMessage)
+          console.log("receivedMessage", receivedMessage);
           // 返答を一文単位で切り出して処理する
           const sentenceMatch = receivedMessage.match(
             /^(.+?[.!?。！？:;])(\s+|$)/
           );
 
-          
           if (sentenceMatch && sentenceMatch[0]) {
             const sentence = sentenceMatch[0];
             sentences.push(sentence);
@@ -241,22 +245,37 @@ export default function Home() {
       <MessageInputContainer
         isChatProcessing={chatProcessing}
         onChatProcessStart={handleSendChat}
-      />
-      <Menu
-        openAiKey={openAiKey ?? ""}
-        systemPrompt={systemPrompt}
-        chatLog={chatLog}
-        koeiroParam={koeiroParam}
-        assistantMessage={assistantMessage}
-        koeiromapKey={koeiromapKey}
-        onChangeAiKey={setOpenAiKey}
-        onChangeSystemPrompt={setSystemPrompt}
-        onChangeChatLog={handleChangeChatLog}
-        onChangeKoeiromapParam={setKoeiroParam}
-        handleClickResetChatLog={() => setChatLog([])}
-        handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
-        onChangeKoeiromapKey={setKoeiromapKey}
-      />
+      />{" "}
+      <div
+        style={{
+          position: "fixed",
+          right: "10%",
+          top: "40%",
+          transform: "translateY(-50%)",
+          height: "20vh",
+          width: "20%",
+          zIndex: 10,
+        }}
+      >
+        <FaceRecognition onCurrentUserChange={handleCurrentUserChange} />
+      </div>
+      <div style={{ position: "absolute", top: 0, width: "100%" }}>
+        <Menu
+          openAiKey={openAiKey ?? ""}
+          systemPrompt={systemPrompt}
+          chatLog={chatLog}
+          koeiroParam={koeiroParam}
+          assistantMessage={assistantMessage}
+          koeiromapKey={koeiromapKey}
+          onChangeAiKey={setOpenAiKey}
+          onChangeSystemPrompt={setSystemPrompt}
+          onChangeChatLog={handleChangeChatLog}
+          onChangeKoeiromapParam={setKoeiroParam}
+          handleClickResetChatLog={() => setChatLog([])}
+          handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
+          onChangeKoeiromapKey={setKoeiromapKey}
+        />
+      </div>
     </div>
   );
 }
