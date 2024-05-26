@@ -11,7 +11,7 @@ import {
 } from "@/features/constants/koeiroParam";
 import { Link } from "./link";
 import { atom, useAtomValue, useSetAtom } from "jotai";
-export const currentLanguageAtom = atom("en-US");
+export const currentLanguageAtom = atom("ja-JP");
 
 type Props = {
   openAiKey: string;
