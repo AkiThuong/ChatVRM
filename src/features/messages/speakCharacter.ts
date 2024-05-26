@@ -60,7 +60,7 @@ export const fetchAudio = async (
   message: string,
   apiKey: string
 ): Promise<ArrayBuffer> => {
-  const ttsVoice = await ttsStreaming(message, "gkpVmeUj2dN8UTBY3oUz");
+  const ttsVoice = await ttsStreaming(message, "Tvjzxp6s1ruQXdfUlU7B");
   if (!ttsVoice) {
     throw new Error(
       "ttsVoice is undefined, something went wrong with ttsStreaming."
