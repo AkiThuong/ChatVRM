@@ -116,8 +116,8 @@ export const Settings = ({
             </div>
 
             <select onChange={handleChange}>
-              <option value="en-US">English</option>
               <option value="ja-JP">日本語</option>
+              <option value="en-US">English</option>
               <option value="vi-VN">Tiếng Việt</option>
             </select>
           </div>

@@ -49,10 +49,10 @@ export async function getChatResponseStream(
     const seconds = today.getSeconds();
     return `${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer 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`,
-  };
+  // const headers: Record<string, string> = {
+  //   "Content-Type": "application/json",
+  //   Authorization: `Bearer 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`,
+  // };
   function getCurrentWeather(location: string, unit: string = "fahrenheit") {
     if (location.toLowerCase().includes("tokyo")) {
       console.log("Tokyo");
@@ -199,160 +199,16 @@ export async function getChatResponseStream(
     return JSON.stringify(data); // Converting data back to JSON string if needed elsewhere
   }
 
-  const tools = [
-    {
-      type: "function",
-      function: {
-        name: "get_current_weather",
-        description: "Get the current weather in a given location",
-        parameters: {
-          type: "object",
-          properties: {
-            location: {
-              type: "string",
-              description: "The city and state, e.g. San Francisco, CA",
-            },
-            unit: { type: "string", enum: ["celsius", "fahrenheit"] },
-          },
-          required: ["location"],
-        },
-      },
-    },
-    {
-      type: "function",
-      function: {
-        name: "get_lunch_data",
-        description: "Find Lunch Option of certain user for today",
-        parameters: {
-          type: "object",
-          properties: {
-            userName: {
-              type: "string",
-              description:
-                "Username, Leave it blank if not specified, only add Human Name, e.g. 'Aki'",
-            },
-          },
-        },
-      },
-    },
-    {
-      type: "function",
-      function: {
-        name: "get_user_name",
-        description: "Get the list of userNames in the system",
-        parameters: {
-          type: "object",
-          properties: {
-            name: {
-              type: "string",
-              description: "Search Name, Leave it blank if not specified",
-            },
-          },
-        },
-      },
-    },
-  ];
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
 
-  // const headers: Record<string, string> = {
-  //   "Content-Type": "application/json",
-  //   Authorization: `Bearer ${apiKey}`,
-  // };
-<<<<<<< Updated upstream
-
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    headers: headers,
-    method: "POST",
-    body: JSON.stringify({
-      model: "llama3-8b-8192",
-      messages: [
-        ...messages,
-        { role: "system", content: `Today: ${getTodayDateTime()}` },
-      ],
-      stream: true,
-      max_tokens: 200,
-    }),
-  });
-=======
-  messages = [
-    ...messages,
-    {
-      role: "system",
-      content: `Today: ${getTodayDateTime()}. You are talking with ${currentUser}`,
-    },
-  ];
-  console.log(messages);
-  const response = await fetch(
-    "https://api.groq.com/openai/v1/chat/completions",
-    {
-      headers: headers,
-      method: "POST",
-      body: JSON.stringify({
-        model: "llama3-8b-8192",
-        messages: messages,
-        max_tokens: 3000,
-        tools: tools,
-        tool_choice: "auto",
-      }),
-    }
-  );
-  const returnData = await response.json();
-  const responseMessage = returnData.choices[0].message;
-  const toolCalls = responseMessage.tool_calls;
-  console.log("toolCalls", toolCalls);
-  if (responseMessage.tool_calls) {
-    const availableFunctions: any = {
-      get_current_weather: getCurrentWeather,
-      get_timeline_data: getLunchData,
-      get_user_name_list: getUserNameList,
-    };
-    if (responseMessage.content !== null) {
-      messages.push(responseMessage);
-    }
-    for (const toolCall of toolCalls) {
-      const functionName = toolCall.function.name;
-      const functionToCall = availableFunctions[functionName];
-      const functionArgs = JSON.parse(toolCall.function.arguments);
-      try {
-        // Check if function is async and await its result
-        let functionResponse: any;
-        // Determine the correct arguments based on the function name
-        if (functionName === "get_current_weather") {
-          // Assuming getCurrentWeather function takes 'location' and 'unit' as arguments
-          functionResponse = await functionToCall(
-            functionArgs.location,
-            functionArgs.unit
-          );
-        } else if (functionName === "get_lunch_data") {
-          functionResponse = await functionToCall(functionArgs.ownerFilter);
-        } else if (functionName === "get_user_name") {
-          functionResponse = await functionToCall(functionArgs.name);
-        } else {
-          throw new Error("Unknown function called");
-        }
-        if (functionResponse !== null) {
-          messages.push({
-            tool_call_id: toolCall.id,
-            role: "function",
-            name: functionName,
-            content: functionResponse,
-          });
-        }
-      } catch (error) {
-        console.error(`Error calling function ${functionName}:`, error);
-        // Handle error or push an error message to the messages array
-      }
-    }
-  }
-  console.log("responseMessage", responseMessage);
-  // messages.push(responseMessage);
-  console.log("messages", messages);
->>>>>>> Stashed changes
-
-  // const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  // const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
   //   headers: headers,
   //   method: "POST",
   //   body: JSON.stringify({
-  //     model: "gpt-4o",
+  //     model: "llama3-8b-8192",
   //     messages: [
   //       ...messages,
   //       { role: "system", content: `Today: ${getTodayDateTime()}` },
@@ -361,17 +217,53 @@ export async function getChatResponseStream(
   //     max_tokens: 200,
   //   }),
   // });
+  // messages = [
+  //   ...messages,
+  //   {
+  //     role: "system",
+  //     content: `Today: ${getTodayDateTime()}.`,
+  //   },
+  // ];
+  // console.log(messages);
+  // const response = await fetch(
+  //   "https://api.groq.com/openai/v1/chat/completions",
+  //   {
+  //     headers: headers,
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       model: "llama3-8b-8192",
+  //       messages: messages,
+  //       max_tokens: 3000,
+  //       tools: tools,
+  //       tool_choice: "auto",
+  //     }),
+  //   }
+  // );
 
-  const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: headers,
     method: "POST",
     body: JSON.stringify({
-      model: "llama3-8b-8192",
-      messages: messages,
+      model: "gpt-4o",
+      messages: [
+        ...messages,
+        { role: "system", content: `Today: ${getTodayDateTime()}` },
+      ],
       stream: true,
       max_tokens: 200,
     }),
   });
+
+  // const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+  //   headers: headers,
+  //   method: "POST",
+  //   body: JSON.stringify({
+  //     model: "llama3-8b-8192",
+  //     messages: messages,
+  //     stream: true,
+  //     max_tokens: 200,
+  //   }),
+  // });
 
   const reader = res.body?.getReader();
   if (res.status !== 200 || !reader) {
